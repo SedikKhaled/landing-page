@@ -1,8 +1,9 @@
 
 let btntop=document.querySelector(".btn-top");
-let secs=Array.from(document.querySelectorAll("section"))
-  let na=document.querySelector(".menu-nav")
+let secs= document.querySelectorAll("section")
+  let na= document.querySelector(".menu-nav")
   let navul=document.getElementById("nav-list")
+let container=document.getElementsByClassName("container")
 
 
 
@@ -35,46 +36,73 @@ initialSetup()
 
 
 
-//section scrolling
+
 navul.addEventListener("click",(even)=>{
     even.preventDefault();
     if(even.target.dataset.nav){
 document.getElementById(even.target.dataset.nav).scrollIntoView({behavior:"smooth"});
-setTimeout(()=>{
-    location.hash=even.target.dataset.nav
-},700)
     }
 })
 
 
+
 //focus on section
-window.onscroll=function () {
-    document.querySelectorAll("section").forEach(function(active){
-        if(active.getBoundingClientRect().top >=-400 &&
-        active.getBoundingClientRect().top<=150)
-        {
-            active.classList.add("your-activ-class")
-        }else{
-            active.classList.remove("your-activ-class")
-        }
-    })
+// window.onscroll=function () {
+//     document.querySelectorAll("section").forEach(function(active){
+//         let activeLink = navul.querySelector(`[data-nav=${active.id}]`)
+//         if(active.getBoundingClientRect().top >=-600 &&
+//         active.getBoundingClientRect().top<=150)
+//         {
+//             active.classList.add("your-active-class")
+//             activeLink.classList.add("active-link");
+//         }else{
+//             active.classList.remove("your-active-class")
+//             activeLink.classList.remove("active-link");
+//         }
+//     })
    
+// }
+//focus on section
+ function isInViewport(element) {
+    const distance = element.getBoundingClientRect();
+    return (
+        distance.top <= 600 &&
+        distance.left >= 0 &&
+        distance.bottom >= 90 &&
+        distance.right <= (window.innerWidth || document.documentElement.clientWidth));
+        ;
 }
+
+document.addEventListener('scroll', function activeSection(){
+    for (const section of secs) {
+        const navItem = navul.querySelector(`[data-nav=${section.id}]`);
+        if (isInViewport(section)) {
+            section.classList.add("your-active-class");
+             navItem.classList.add("active-link");
+            console.log(`Section ${section.id} is active`);
+        } else {
+            section.classList.remove("your-active-classs");
+             navItem.classList.remove("active-link");
+        }
+    }
+}
+)
 
 
 //BTN TO SCROLL TOP
 
-btntop.addEventListener('click', () => {
-   
-    document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-});
+btntop.addEventListener('click', topFunction());
+function topFunction() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
 // btn's top display
-window.addEventListener('scroll', () => {
-    if(scrollY >=5000){
-        btntop.style.display="block"
-    }else{
-        btntop.style.display="none"
+
+    window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            btntop.style.display = "block";
+          } else {
+            btntop.style.display = "none";
+          }
     }
-    })
-    
